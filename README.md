@@ -10,7 +10,7 @@ yarn add @figliolia/rn-navigation
 ```
 
 ## Getting Started
-Using a router is simple. At the root of your application import the `Router`:
+To begin, import the `Router` and render it somewhere in your react tree along with an array of `Routes`
 
 ```tsx
 import { View } from "react-native";
@@ -35,20 +35,19 @@ export const App = () => {
   );
 }
 ```
-And that's it! Now you can navigate between `home, contact, and settings` by calling `Router.navigate("<route>", {} /* state */)`;
 
 ## Nested Routing
-A common pattern in application routing is the concept of nested `Routers` - meaning a given `route` can itself render its own `Router`. This pattern is supported and recommended by this library.
-
-One pattern difference to be aware of is that query params are not supported. More conveniently, to navigate to one of your screens with some predetermined data you can call:
+A common pattern in application routing is the concept of nested `Routers` - meaning a given `route` can itself, render its own `Router`. This pattern is supported by this library under two conditions.
+1. All `Route` names must be unique. If this is a no-brainer to you, great!
+2. Query params are not supported. More conveniently, to navigate to one of your screens with some predetermined data you can call:
 
 ```typescript
 Router.navigate("your-screen", { /* your state */ });
 ```
-When `your-screen` renders, it's `routeState` prop will equal the state you provide `Render.navigate()`
+When `your-screen` renders, it's `routeState` prop will equal the state you provide `Router.navigate()`
 
 ## Animating Transitions
-This library is compatible with all animation libraries, including `react-native's`. To animate a screen's entrance simply invoke your animation when your screen mounts:
+This library is compatible with all animation libraries, including `react-native's` own. To animate a screen's entrance simply invoke your animation when your screen mounts:
 ```tsx
 import { useRef, useEffect } from "react";
 import { Animated, Text } from "react-native";
@@ -57,6 +56,7 @@ export const MyScreen = () => {
   const opacity = useRef(new Animated.Value(0));
 
   useEffect(() => {
+    // Animate on mount!
     Animated.timing(opacity.current, {
       toValue: 1,
       duration: 500,
@@ -76,7 +76,7 @@ export const MyScreen = () => {
   );
 }
 ```
-To animate your screen exiting, this library provides a method for registering exit animations:
+To animate your screen exiting, this library provides a method for registering your exit animations:
 ```tsx
 import { useRef, useEffect } from "react";
 import { Animated, Text } from "react-native";
@@ -86,6 +86,7 @@ export const MyScreen = () => {
   const opacity = useRef(new Animated.Value(0));
 
   useEffect(() => {
+    // Resolve a promise when your animation completes
     const exit = () => new Promise(resolve => {
       Animated.timing(opacity.current, {
         toValue: 1,
@@ -95,7 +96,7 @@ export const MyScreen = () => {
         resolve();
       });
     };
-    // Register exit
+    // Register the exit animation
     Router.registerExitTransition(exit);
   }, []);
 
@@ -114,7 +115,7 @@ export const MyScreen = () => {
 Now `MyScreen` will fade out when a navigation occurs!
 
 ## Advanced Usage
-Routing in large applications can become complex when managing permissions and authentication. Let's use this library to make it simple and declarative:
+Routing in large applications can become complex when managing permissions and authentication. Let's use this library simplify building routes requiring authentication:
 ```tsx
 import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
@@ -129,26 +130,31 @@ export const AuthenticatedRoute: FC<{
   const [pass, setPass] = useState(false);
 
   useEffect(() => {
+    // Check local storage for an auth token
     AsyncStorage.getItem('auth').then(async token => {
       if(!token) {
+        // Redirect to login if the token doesn't exist
         return Router.navigate(redirect);
       }
       await fetch("/verify", data: { token });
+      // Set pass equal to true
       setPass(true);
     }).catch(() => {
+      // Redirect to login if the token cannot be refreshed
       Router.navigate(redirect);
     });
   }, []);
 
   if(!pass) {
+    // Fallback can be a loading animation
     return fallback;
   }
-  
+  // Render the route!
   return children;
 }
 ```
 
-Now we can wrap any of our routes that require a valid authentication token:
+Now let's use our component and protect any components that require authentication: 
 ```tsx
 const Home = () => {
   return (
@@ -179,8 +185,10 @@ export const App = () => {
 By default, our `App` will attempt to render the `Home` screen, but will fallback to login when the current user is not authenticated.
 
 ## API
+
 ### Router
-The `Router` is your API accomplishing all your routing needs in your react native app. To create a router instance, simply render it somewhere in your application:
+
+The `Router` is your one-stop-shop accomplishing all your routing needs in your react native app. To create a `Router` instance, simply render it somewhere in your application:
 ```tsx
 import { View } from "react-native";
 import { Router } from "@figliolia/rn-navigation"; 
@@ -201,7 +209,7 @@ export const App = () => {
   );
 }
 ```
-In addition to rendering your screens, the `Router` also has a public API. This API is designed to be a one-stop-shop for all your programmatic routing needs:
+In addition to rendering your screens, the `Router` also has a public API:
 
 ##### `Router.navigate(): void`
 Navigates to the specified route and renders it with the provided state object
