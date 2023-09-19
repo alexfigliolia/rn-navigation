@@ -23,6 +23,54 @@ interface State {
   nextState: Record<string, any>;
 }
 
+/**
+ * ### Router
+ *
+ * A first class routing solution for React Native apps. This
+ * library focuses entirely on transitioning screens and managing
+ * state - leaving all opinions regarding look and feel up to the
+ * developer!
+ *
+ * ```tsx
+ * import { Router } from "@figliolia/rn-navigation";
+ *
+ * import { Home, Contact, Settings } from "./my-routes";
+ *
+ * const App = () => {
+ *   return (
+ *     <Router
+ *       defaultRoute="home"
+ *       routes={[
+ *         { name: "home", component: Home },
+ *         { name: "contact", component: Contact },
+ *         { name: "settings", component: Settings },
+ *       ]} />
+ *   );
+ * }
+ * ```
+ *
+ * #### Navigating Between Screens
+ * ```tsx
+ * import type { FC } from "react";
+ * import { View, TouchableOpacity } from "react-native";
+ * import { Router } from "@figliolia/rn-navigation"
+ *
+ * export const Home: FC<{ routeState: { data: boolean } }> = () => {
+ *
+ *   const navigate = () => {
+ *     Router.navigate("settings", { someData: true });
+ *   }
+ *
+ *   return (
+ *     <View>
+ *       <TouchableOpacity onPress={navigate}>
+ *         Go to Settings
+ *       </TouchableOpacity>
+ *     </View>
+ *   );
+ * }
+ * ```
+ */
 export class Router extends Component<Props, State> {
   private routeChanges = 0;
   private readonly initialRoute: string;
@@ -43,7 +91,7 @@ export class Router extends Component<Props, State> {
     fallbackView: null,
   };
 
-  componentWillUnmount() {
+  public override componentWillUnmount() {
     this.internalSubscriptions.forEach(({ ID, event }) => {
       Navigation.Emitter.off(event, ID);
     });
@@ -89,30 +137,68 @@ export class Router extends Component<Props, State> {
     );
   }
 
+  /**
+   * ### Navigate
+   *
+   * Given the name of a route and (optionally) a state object
+   * navigates to that route and sets its state
+   */
   public static navigate(route: string, state: Record<string, any> = {}) {
     Navigation.navigate(route, state);
   }
 
+  /**
+   * ### Go Back
+   *
+   * Navigates to the previous route and state
+   */
   public static goBack() {
     Navigation.goBack();
   }
 
+  /**
+   * ### Subscribe
+   *
+   * Executes the provided callback each time the current route
+   * changes
+   */
   public static subscribe(cb: RouteChangeCB) {
     return this.globalSubscriptions.add(cb);
   }
 
+  /**
+   * ### Unsubscribe
+   *
+   * Provided a listener ID, unsubscribes from route changes
+   */
   public static unsubscribe(ID: string) {
     return this.globalSubscriptions.remove(ID);
   }
 
+  /**
+   * ### Register Exit Transition
+   *
+   * Registers a function to exit prior to the current route
+   * transitioning
+   */
   public static registerExitTransition(fn: () => void | Promise<void>) {
     Navigation.ExitTransitions.add(Navigation.currentRoute, fn);
   }
 
+  /**
+   * ### Current Route
+   *
+   * Returns the Router's current route
+   */
   public static get currentRoute() {
     return Navigation.currentRoute;
   }
 
+  /**
+   * ### Last Route
+   *
+   * Returns the Router's previous route
+   */
   public static get lastRoute() {
     return Navigation.peak()?.name ?? "";
   }

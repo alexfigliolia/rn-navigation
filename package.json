@@ -1,7 +1,7 @@
 {
   "name": "@figliolia/rn-navigation",
   "version": "1.0.0",
-  "description": "A light navigation library for react-native apps",
+  "description": "A light-weight navigation library for react-native apps",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
   "exports": {
@@ -51,10 +51,10 @@
     "tsc-alias": "^1.8.7",
     "typescript": "^4.4.2"
   },
-  "homepage": "https://github.com/alexfigliolia/enhanced-stores#readme",
+  "homepage": "https://github.com/alexfigliolia/rn-navigation#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alexfigliolia/enhanced-stores.git"
+    "url": "git+https://github.com/alexfigliolia/rn-navigation.git"
   },
   "author": "Alex Figliolia",
   "license": "MIT"

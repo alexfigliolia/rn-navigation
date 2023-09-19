@@ -7,6 +7,12 @@ import type { CurrentRouteEvents } from "./types";
 let subscription: null | string = null;
 const Emitter = new EventEmitter<CurrentRouteEvents>();
 
+/**
+ * ### Use Current Route
+ *
+ * Subscribes to the current route and returns it's value. Each
+ * time the current route changes, this hook will rerender
+ */
 export const useCurrentRoute = () => {
   const [route, setRoute] = useState(Navigation.currentRoute);
   const listenerID = useRef("");

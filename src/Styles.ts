@@ -10,4 +10,11 @@ export const Styles = StyleSheet.create({
     overflow: "hidden",
     zIndex: 2,
   },
+  fill: {
+    flex: 1,
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
