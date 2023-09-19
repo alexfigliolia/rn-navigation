@@ -4,12 +4,9 @@ export interface RouteProps {
   routeState: Record<string, any>;
 }
 
-export interface RouteTransitions {
-  exit?: () => Promise<void>;
-  enter?: () => Promise<void>;
-}
+export type RouteTransition = () => void | Promise<void>;
 
-export type RouteComponent = ComponentType<RouteProps> & RouteTransitions;
+export type RouteComponent = ComponentType<RouteProps>;
 
 export interface IRoute {
   name: string;
@@ -45,7 +42,5 @@ export type TransitionEvents = {
 export type CurrentRouteEvents = {
   "route-change": NavigationEntry;
 };
-
-export type ComponentGetter = () => RouteComponent;
 
 export type Frame = JSX.Element | null;

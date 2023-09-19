@@ -32,9 +32,8 @@ export class Router extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.NavigationContext = Navigation.createContext(props.routes);
-    this.initialRoute =
-      props.defaultRoute || props.routes[props.routes.length - 1].name;
-    Navigation.currentRoute = this.initialRoute;
+    this.initialRoute = props.defaultRoute || props.routes[0].name;
+    Navigation.initializeRouter(this.initialRoute);
     this.state = { next: null, nextState: {} };
     this.subscribe();
   }
@@ -49,22 +48,6 @@ export class Router extends Component<Props, State> {
       Navigation.Emitter.off(event, ID);
     });
     this.internalSubscriptions.clear();
-  }
-
-  public static navigate(route: string, state: Record<string, any> = {}) {
-    Navigation.navigate(route, state);
-  }
-
-  public static goBack() {
-    Navigation.goBack();
-  }
-
-  public static subscribe(cb: RouteChangeCB) {
-    return this.globalSubscriptions.add(cb);
-  }
-
-  public static unsubscribe(ID: string) {
-    return this.globalSubscriptions.remove(ID);
   }
 
   private subscribe() {
@@ -104,5 +87,33 @@ export class Router extends Component<Props, State> {
         NextScreen={NextScreen}
       />
     );
+  }
+
+  public static navigate(route: string, state: Record<string, any> = {}) {
+    Navigation.navigate(route, state);
+  }
+
+  public static goBack() {
+    Navigation.goBack();
+  }
+
+  public static subscribe(cb: RouteChangeCB) {
+    return this.globalSubscriptions.add(cb);
+  }
+
+  public static unsubscribe(ID: string) {
+    return this.globalSubscriptions.remove(ID);
+  }
+
+  public static registerExitTransition(fn: () => void | Promise<void>) {
+    Navigation.ExitTransitions.add(Navigation.currentRoute, fn);
+  }
+
+  public static get currentRoute() {
+    return Navigation.currentRoute;
+  }
+
+  public static get lastRoute() {
+    return Navigation.peak()?.name ?? "";
   }
 }
