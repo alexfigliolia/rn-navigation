@@ -188,7 +188,7 @@ By default, our `App` will attempt to render the `Home` screen, but will fallbac
 
 ### Router
 
-The `Router` is your one-stop-shop accomplishing all your routing needs in your react native app. To create a `Router` instance, simply render it somewhere in your application:
+The `Router` is your one-stop-shop for accomplishing all your routing needs in your react native app. To create a `Router` instance, simply render it somewhere in your application:
 ```tsx
 import { View } from "react-native";
 import { Router } from "@figliolia/rn-navigation"; 
