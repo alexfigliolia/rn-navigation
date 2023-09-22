@@ -56,6 +56,18 @@
     "type": "git",
     "url": "git+https://github.com/alexfigliolia/rn-navigation.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Alex Figliolia",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": [
+    "navigation",
+    "react",
+    "react-native",
+    "router",
+    "screens",
+    "ios",
+    "android"
+  ]
 }
