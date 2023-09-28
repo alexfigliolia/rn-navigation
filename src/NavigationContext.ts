@@ -1,8 +1,8 @@
 import type { ComponentType } from "react";
-import type { IRoute, RouteComponent } from "./types";
+import type { IRoute } from "./types";
 
 export class NavigationContext extends Array<IRoute> {
-  indexedRoutes: Record<string, ComponentType> = {};
+  indexedRoutes: Record<string, ComponentType<any>> = {};
   constructor(routes: IRoute[]) {
     super();
     this.push(...routes);
@@ -12,7 +12,7 @@ export class NavigationContext extends Array<IRoute> {
   }
 
   public routeComponent(routeName: string) {
-    return this.indexedRoutes[routeName] as RouteComponent;
+    return this.indexedRoutes[routeName];
   }
 
   public has(routeName: string) {

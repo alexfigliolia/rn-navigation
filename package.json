@@ -1,6 +1,6 @@
 {
   "name": "@figliolia/rn-navigation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A light-weight navigation library for react-native apps",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",

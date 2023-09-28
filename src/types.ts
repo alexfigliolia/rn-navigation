@@ -10,7 +10,7 @@ export type RouteComponent = ComponentType<RouteProps>;
 
 export interface IRoute {
   name: string;
-  component: ComponentType;
+  component: ComponentType<any>;
 }
 
 export interface IContext {
