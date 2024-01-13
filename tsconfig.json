@@ -20,7 +20,10 @@
 		"noEmit": true,
 	},
 	"include": [
-		"src"
+		"src",
+		"**/*.ts",
+		"**/*.js",
+		"**/*.json"
 	],
 	"exclude": [
 		"node_modules",

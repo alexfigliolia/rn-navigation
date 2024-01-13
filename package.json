@@ -2,33 +2,34 @@
   "name": "@figliolia/rn-navigation",
   "version": "1.0.1",
   "description": "A light-weight navigation library for react-native apps",
-  "main": "dist/cjs/index.js",
-  "module": "dist/mjs/index.js",
   "exports": {
     ".": {
       "import": "./dist/mjs/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
     }
   },
-  "types": "dist/mjs/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist",
     "src/*"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "cli": "yarn build && node dist/stealth/CLI.js",
-    "build": "rm -rf dist && tsc -p tsconfig.mjs.json && tsc -p tsconfig.cjs.json && ./pkg.sh",
-    "lint": "tsc --noemit && eslint ./ --fix"
+    "build": "npx ts-packager -e src",
+    "lint": "tsc --noemit && eslint ./src --fix"
   },
   "peerDependencies": {
     "react": "^18.2.0",
     "react-native": "^0.72.4"
   },
   "dependencies": {
-    "@figliolia/event-emitter": "^1.1.1"
+    "@figliolia/event-emitter": "^1.1.2"
   },
   "devDependencies": {
+    "@figliolia/ts-packager": "^1.0.3",
     "@types/jest": "^29.5.3",
     "@types/react": "^18.2.21",
     "@types/react-native": "^0.72.2",
